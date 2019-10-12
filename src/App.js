@@ -1,13 +1,21 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/prop-types */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable eqeqeq */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  Route, Link, Switch, withRouter,
+} from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+
 import './App.scss';
 import routes from './router';
 
-export default class Schulte extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     const pageSize = isMobile ? routes.length : 9;
@@ -28,9 +36,26 @@ export default class Schulte extends Component {
       gridTemplateRows,
       gridTemplateColumns,
       curPage: 0,
-      enterItem: false,
       links: routes.slice(0, pageSize),
     };
+  }
+
+  componentDidMount() {
+    const { pathname } = this.props.location;
+    this.setState({
+      isHome: pathname == '/',
+    });
+
+    this.props.history.listen((router) => {
+      this.onRouterChange(router);
+    });
+  }
+
+  onRouterChange(router) {
+    const { pathname } = router;
+    this.setState({
+      isHome: pathname == '/',
+    });
   }
 
   pageToggle(curPage) {
@@ -42,15 +67,22 @@ export default class Schulte extends Component {
     });
   }
 
+  enterLink() {
+    this.setState({
+      isHome: false,
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <div className="header" />
+        {this.state.isHome && <div className="header" />}
+        {this.state.isHome && (
         <div className="body">
           <div className="links-container" style={{ gridTemplateColumns: this.state.gridTemplateColumns, gridTemplateRows: this.state.gridTemplateRows, height: isMobile ? '100%' : 'fit-content' }}>
             {this.state.links.map((link, index) => (
               <div key={index} className="link" style={{ marginTop: `${this.state.marginTop}px` }}>
-                {link.name}
+                <Link to={link.path} onClick={this.enterLink.bind(this)}>{link.name}</Link>
               </div>
             ))}
             {isMobile && <div className="bottom">~~到底了~~</div>}
@@ -64,20 +96,24 @@ export default class Schulte extends Component {
             }
           </div>
           )}
-          {this.state.enterItem && (
-          <Router>
-            {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                component={route.component}
-              />
-            ))}
-          </Router>
-          )}
         </div>
+        )}
+        {!this.state.isHome && (
+        <Switch>
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              exact={route.exact}
+              component={route.component}
+              forceRefresh
+            />
+          ))}
+        </Switch>
+        )}
       </div>
     );
   }
 }
+
+export default withRouter(App);

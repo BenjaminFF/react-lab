@@ -78,39 +78,39 @@ class App extends Component {
       <div className="App">
         {this.state.isHome && <div className="header" />}
         {this.state.isHome && (
-        <div className="body">
-          <div className="links-container" style={{ gridTemplateColumns: this.state.gridTemplateColumns, gridTemplateRows: this.state.gridTemplateRows, height: isMobile ? '100%' : 'fit-content' }}>
-            {this.state.links.map((link, index) => (
-              <div key={index} className="link" style={{ marginTop: `${this.state.marginTop}px` }}>
-                <Link to={link.path} onClick={this.enterLink.bind(this)}>{link.name}</Link>
+          <div className="body">
+            <div className="links-container" style={{ gridTemplateColumns: this.state.gridTemplateColumns, gridTemplateRows: this.state.gridTemplateRows, height: isMobile ? '100%' : 'fit-content' }}>
+              {this.state.links.map((link, index) => (
+                <div key={index} className="link-container" style={{ marginTop: `${this.state.marginTop}px` }}>
+                  <Link to={link.path} onClick={this.enterLink.bind(this)} className="link">{link.name}</Link>
+                </div>
+              ))}
+              {isMobile && <div className="bottom">~~到底了~~</div>}
+            </div>
+            {(!isMobile && this.state.pages > 1) && (
+              <div className="pageitems-container">
+                {
+                  this.state.pageItems.map((pageItem) => (
+                    <div key={pageItem} className={`page-item ${pageItem === this.state.curPage ? 'page-item-active' : null}`} onClick={this.pageToggle.bind(this, pageItem)} />
+                  ))
+                }
               </div>
-            ))}
-            {isMobile && <div className="bottom">~~到底了~~</div>}
+            )}
           </div>
-          {(!isMobile && this.state.pages > 1) && (
-          <div className="pageitems-container">
-            {
-              this.state.pageItems.map((pageItem) => (
-                <div key={pageItem} className={`page-item ${pageItem === this.state.curPage ? 'page-item-active' : null}`} onClick={this.pageToggle.bind(this, pageItem)} />
-              ))
-            }
-          </div>
-          )}
-        </div>
         )}
         {!this.state.isHome && (
-        <Switch>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              component={route.component}
-              forceRefresh
-            />
-          ))}
-        </Switch>
+          <Switch>
+            {routes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                component={route.component}
+              />
+            ))}
+          </Switch>
         )}
+
       </div>
     );
   }

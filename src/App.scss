@@ -20,13 +20,18 @@
 
 .links-container{
   display: grid;
-  & .link{
+  & .link-container{
     background-color: black;
     color: white;
     margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    & .link{
+      color: white;
+      text-decoration: none;
+    }
   }
 }
 
@@ -52,4 +57,12 @@
 
 .pageitems-container{
   display: flex;
+}
+
+.router-container{
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }

@@ -1,5 +1,6 @@
 import home from '../pages/home';
 import schulte from '../pages/schulte';
+import subtitleLearn from '../pages/subtitleLearn';
 
 const routes = [
   {
@@ -14,9 +15,9 @@ const routes = [
     component: home,
   },
   {
-    path: '/schulte',
-    name: 'schulte',
-    component: schulte,
+    path: '/subtitleLearn',
+    name: 'subtitleLearn',
+    component: subtitleLearn,
   },
   {
     path: '/schulte',

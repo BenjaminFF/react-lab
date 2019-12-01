@@ -34,7 +34,6 @@ export default class Schulte extends Component {
                     for (let item of subtitleArr) {
                         if (mAudio.currentTime * 1000 > item.start && mAudio.currentTime * 1000 < item.end) {
                             item.selected = true
-                            console.log(item)
                             break
                         }
                     }

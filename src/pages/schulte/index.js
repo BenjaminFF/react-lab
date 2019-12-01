@@ -13,9 +13,9 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
-import './index.scss';
-import _ from 'lodash';
+import React, { Component } from 'react'
+import './index.scss'
+import _ from 'lodash'
 
 export default class Schulte extends Component {
   constructor(props) {
@@ -33,14 +33,14 @@ export default class Schulte extends Component {
       schulteModes = JSON.parse(schulteRecordsJson);
     }
     schulteModes.forEach((element, index) => {
-      index === 0 ? element.selected = true : element.selected = false;
+      index === 0 ? element.selected = true : element.selected = false
     });
-    const cells = [];
+    const cells = []
     for (let i = 0; i < schulteModes[0].mode; i += 1) {
-      cells.push({ index: i + 1, active: false });
+      cells.push({ index: i + 1, active: false })
     }
-    const gridTemplateColumns = `repeat(${Math.sqrt(schulteModes[0].mode)},5rem)`;
-    const gridTemplateRows = `repeat( ${Math.sqrt(schulteModes[0].mode)},5rem)`;
+    const gridTemplateColumns = `repeat(${Math.sqrt(schulteModes[0].mode)},5rem)`
+    const gridTemplateRows = `repeat( ${Math.sqrt(schulteModes[0].mode)},5rem)`
     this.state = {
       schulteModes,
       curMode: schulteModes[0],
@@ -52,14 +52,14 @@ export default class Schulte extends Component {
       recordInterval: null,
       tempRecord: 0,
     };
-    this.onModeChange = this.onModeChange.bind(this);
-    this.startGame = this.startGame.bind(this);
+    this.onModeChange = this.onModeChange.bind(this)
+    this.startGame = this.startGame.bind(this)
   }
 
   formatRecord(record) {
-    const minute = Math.floor(record / 60);
-    const second = record % 60;
-    return `${minute < 10 ? `0${minute}` : minute}:${second < 10 ? `0${second}` : second}`;
+    const minute = Math.floor(record / 60)
+    const second = record % 60
+    return `${minute < 10 ? `0${minute}` : minute}:${second < 10 ? `0${second}` : second}`
   }
 
   startGame() {
@@ -72,15 +72,15 @@ export default class Schulte extends Component {
     }, 1000);
     this.setState({
       gameStarted: true,
-    });
+    })
   }
 
   onModeChange(event) {
     const mode = event.target.value;
-    const curMode = this.state.schulteModes.filter((schulteMode) => schulteMode.mode == mode)[0];
-    const gridTemplateColumns = `repeat(${Math.sqrt(curMode.mode)},5rem)`;
-    const gridTemplateRows = `repeat( ${Math.sqrt(curMode.mode)},5rem)`;
-    const cells = [];
+    const curMode = this.state.schulteModes.filter((schulteMode) => schulteMode.mode == mode)[0]
+    const gridTemplateColumns = `repeat(${Math.sqrt(curMode.mode)},5rem)`
+    const gridTemplateRows = `repeat( ${Math.sqrt(curMode.mode)},5rem)`
+    const cells = []
     for (let i = 0; i < curMode.mode; i += 1) {
       cells.push({ index: i + 1, active: false });
     }
@@ -94,19 +94,19 @@ export default class Schulte extends Component {
       tempRecord: 0,
     });
     if (this.state.recordInterval != null) {
-      clearInterval(this.state.recordInterval);
+      clearInterval(this.state.recordInterval)
     }
   }
 
   onCellClick(cellIndex) {
     if (!this.state.gameStarted) {
-      return;
+      return
     }
     const cells = [...this.state.cells];
-    let { curCellIndex, curMode, tempRecord } = this.state;
+    let { curCellIndex, curMode, tempRecord } = this.state
     if (cellIndex == curCellIndex) {
-      cells.filter((cell) => cell.index == cellIndex)[0].active = true;
-      curCellIndex++;
+      cells.filter((cell) => cell.index == cellIndex)[0].active = true
+      curCellIndex++
     }
     this.setState({
       cells,
@@ -124,12 +124,12 @@ export default class Schulte extends Component {
           localStorage.setItem('schulte-record', JSON.stringify(this.state.schulteModes));
           this.setState({
             curMode,
-          });
+          })
         }
 
-        const newCells = [];
+        const newCells = []
         for (let i = 0; i < curMode.mode; i += 1) {
-          newCells.push({ index: i + 1, active: false });
+          newCells.push({ index: i + 1, active: false })
         }
         this.setState({
           gameStarted: false,
@@ -137,7 +137,7 @@ export default class Schulte extends Component {
           cells: _.shuffle(newCells),
           curCellIndex: 1,
         });
-      }, 500);
+      }, 500)
     }
   }
 
